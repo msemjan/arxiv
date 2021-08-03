@@ -10,7 +10,7 @@ them or open the ArXiv webpage for more information.
 pip install bs4
 ```
 
-[[https://rich.readthedocs.io/en/latest/index.html|Rich]], install with:
+[Rich](https://rich.readthedocs.io/en/latest/index.html), install with:
 ```
 pip install rich
 ```
