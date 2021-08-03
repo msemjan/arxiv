@@ -2,13 +2,20 @@
 import re
 import os    
 import webbrowser
+from rich.console import Console
 import urllib, urllib.request
 from bs4 import BeautifulSoup
 
+# Settings
 MAX_NUM_RESULTS = 20
 DOWNLOAD_DIR = os.path.join(os.getenv("HOME"), "Downloads", "papers")
+
+# Console for pretty outputs
+console = Console()
+
+# Creating a folder for new papers
 if not os.path.isdir(DOWNLOAD_DIR):
-    print("Download folder doesn't exist. Creating one...")
+    console.print("Download folder doesn't exist. Creating one...")
     os.mkdir(DOWNLOAD_DIR)
 
 while(True):
@@ -31,18 +38,18 @@ while(True):
     # List all entries
     for entry in entries:
         authors = [author.text.strip("\n") for author in entry.find_all("author")]
-        print("[",counter,"] ", ", ".join(authors))
-        print()
-        print("\t", entry.title.text)
-        print()
-        print()
-        print("\t", entry.summary.text)
-        print("\tDOI: ", entry.link.attrs["href"])
+        console.print("[",counter,"] ", ", ".join(authors), style="bold dark_orange3")
+        console.print()
+        console.print("\t", entry.title.text, style="bold green")
+        console.print()
+        console.print()
+        console.print("\t", entry.summary.text.replace("\n", " "))
+        console.print("DOI: ", entry.link.attrs["href"], style="bold red")
         counter += 1
-        print()
+        console.print()
     
     # List options
-    option = input("What now?\n[d<number>=Download, o<number>=Open in browser, m=more results in browser, otherwise exit]\n")
+    option = input("What now?\n[d<number>=Download, o<number>=Open in browser, m=more results in browser, q=new query, otherwise exit]\n")
     if option != "" and option[0] in ["D", "d"]:
         # Download the paper as PDF
         try:
@@ -53,7 +60,7 @@ while(True):
             with open(os.path.join(DOWNLOAD_DIR, arxiv_id + ".pdf"), "wb") as f:
                 f.write(response.read())
         except:
-            print("Incorrect input! Exiting...")
+            console.print("Incorrect input! Exiting...")
             os._exit(1)
     elif option != "" and option[0] in ["o", "O"]:
         # Open the paper in Webbrowser
@@ -62,10 +69,12 @@ while(True):
             url = entries[entry_id].find_all("link")[0].attrs["href"]
             webbrowser.open_new_tab(url)
         except:
-            print("Incorrect input! Exiting...")
+            console.print("Incorrect input! Exiting...")
             os._exit(1)
     elif option in ["m", "M"]:
         webbrowser.open_new_tab("https://arxiv.org/search/?query={}&searchtype=all&source=header".format(query))
+    elif option in ["q", "Q"]:
+        continue
     else:
         # Exit
         os._exit(0)

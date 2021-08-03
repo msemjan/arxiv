@@ -9,3 +9,13 @@ them or open the ArXiv webpage for more information.
 ```
 pip install bs4
 ```
+
+[[https://rich.readthedocs.io/en/latest/index.html|Rich]], install with:
+```
+pip install rich
+```
+
+Or everything together using `requirements.txt`:
+```
+pip install -r requirements.txt
+```
