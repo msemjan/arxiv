@@ -6,7 +6,7 @@ import urllib, urllib.request
 from bs4 import BeautifulSoup
 
 MAX_NUM_RESULTS = 20
-DOWNLOAD_DIR = os.path.join(os.getenv("HOME"), "papers")
+DOWNLOAD_DIR = os.path.join(os.getenv("HOME"), "Downloads", "papers")
 if not os.path.isdir(DOWNLOAD_DIR):
     print("Download folder doesn't exist. Creating one...")
     os.mkdir(DOWNLOAD_DIR)
